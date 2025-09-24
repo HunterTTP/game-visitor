@@ -54,6 +54,37 @@
         object-fit: cover;
         display: block;
       }
+      .level-container {
+        position: relative;
+        display: block;
+        border-radius: 0.7rem;
+        overflow: hidden;
+      }
+      .level-image {
+        display: block;
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+      }
+      .overlay {
+        position: absolute;
+        inset: 0;
+        background-color: rgba(0, 0, 0, 0.6);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .level-container:hover .overlay {
+        opacity: 1;
+      }
+      .overlay-text {
+        color: white;
+        font-size: 0.9rem;
+        text-align: center;
+        padding: 0.5rem 0.75rem;
+      }
     </style>
   </head>
   <body>
@@ -182,12 +213,16 @@
         const grid = q("#levelGrid");
         grid.innerHTML = LEVELS.map(
           (l) => `
-          <div class="col tile">
-            <a href="?id=${l.id}" data-level="${l.id}">
-              <img loading="lazy" src="${l.thumb}" alt="${l.title}"/>
-            </a>
-          </div>`
+      <div class="col tile">
+        <a href="?id=${l.id}" data-level="${l.id}" class="level-container">
+          <img loading="lazy" src="${l.thumb}" alt="${l.title}" class="level-image"/>
+          <div class="overlay">
+            <div class="overlay-text">${l.title}</div>
+          </div>
+        </a>
+      </div>`
         ).join("");
+
         grid.addEventListener("click", (e) => {
           const a = e.target.closest("a[data-level]");
           if (!a) return;
