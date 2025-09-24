@@ -107,16 +107,31 @@
         ></button>
       </div>
       <div class="offcanvas-body">
-        <div class="grid">
+        <div class="grid mb-3">
           <div id="levelGrid" class="row row-cols-3 g-2"></div>
         </div>
-        <nav class="nav flex-column mb-3">
+        <div class="mb-3">
+          <div class="d-flex gap-2">
+            <select
+              id="musicSelect"
+              class="form-select form-select-sm"
+            ></select>
+            <button
+              id="btnMuteMusic"
+              type="button"
+              class="btn btn-outline-light btn-sm"
+            >
+              Play
+            </button>
+          </div>
+        </div>
+        <div class="mb-3">
           <a
-            class="nav-link text-primary"
             href="https://github.com/HunterTTP/game-visitor"
+            class="text-primary text-decoration-none"
             >GitHub</a
           >
-        </nav>
+        </div>
       </div>
     </div>
 
@@ -165,6 +180,23 @@
           };
         }),
       ];
+      const SONGS = [
+        {
+          id: "medieval-calm",
+          title: "Calming Medieval Melody",
+          src: "/audio/calming-medieval-melody-398116.mp3",
+        },
+        {
+          id: "medieval-dance",
+          title: "Medieval Dance (2-min edit)",
+          src: "/audio/medieval-dance-2-min-edit-medieval-music-404925.mp3",
+        },
+        {
+          id: "nature-melody",
+          title: "Melody of Nature (Main)",
+          src: "/audio/melody-of-nature-main-6672.mp3",
+        },
+      ];
       const q = (s, d = document) => d.querySelector(s);
       const getLevel = (id) => LEVELS.find((l) => l.id === id) || LEVELS[0];
 
@@ -201,11 +233,11 @@
         const grid = q("#levelGrid");
         grid.innerHTML = LEVELS.map(
           (l) => `
-    <div class="col tile">
-      <a href="?id=${l.id}" data-level="${l.id}">
-        <img loading="lazy" src="${l.thumb}" alt="${l.title}"/>
-      </a>
-    </div>`
+          <div class="col tile">
+            <a href="?id=${l.id}" data-level="${l.id}">
+              <img loading="lazy" src="${l.thumb}" alt="${l.title}"/>
+            </a>
+          </div>`
         ).join("");
         grid.addEventListener("click", (e) => {
           const a = e.target.closest("a[data-level]");
@@ -217,6 +249,33 @@
           );
           offcanvas.hide();
         });
+      }
+
+      function initMusic() {
+        const sel = q("#musicSelect"),
+          btn = q("#btnMuteMusic"),
+          bgm = q("#bgm");
+        sel.innerHTML = SONGS.map(
+          (s) => `<option value="${s.id}">${s.title}</option>`
+        ).join("");
+        bgm.muted = true;
+        const setTrack = (id, play) => {
+          const t = SONGS.find((s) => s.id === id) || SONGS[0];
+          if (!bgm.src.endsWith(t.src)) bgm.src = t.src;
+          if (play && !bgm.muted) bgm.play().catch(() => {});
+        };
+        sel.onchange = () => setTrack(sel.value, true);
+        btn.onclick = () => {
+          bgm.muted = !bgm.muted;
+          btn.textContent = bgm.muted ? "Play" : "Stop";
+          if (!bgm.muted) {
+            if (!bgm.src) setTrack(sel.value || SONGS[0].id, false);
+            bgm.play().catch(() => {});
+          } else {
+            bgm.pause();
+          }
+        };
+        setTrack(SONGS[0].id, false);
       }
 
       addEventListener("DOMContentLoaded", () => {
@@ -250,9 +309,12 @@
         vrScene.addEventListener("exit-vr", () => {
           vrOverlay.style.display = "none";
         });
+
+        initMusic();
       });
     </script>
 
+    <audio id="bgm" preload="none" loop></audio>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>
