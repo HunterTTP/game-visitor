@@ -128,16 +128,8 @@
           pano: "panos/wow-pano-2.jpg",
           thumb: "/panos/wow-pano-2-thumb.webp",
         },
-        ...Array.from({ length: 22 }, (_, i) => {
-          const n = i + 3;
-          return {
-            id: `level-${n}`,
-            title: `Level ${n}`,
-            pano: `https://picsum.photos/seed/${n}/4096/2048`,
-            thumb: `https://picsum.photos/seed/${n}/600/600`,
-          };
-        }),
       ];
+
       const SONGS = [
         {
           id: "medieval-calm",
