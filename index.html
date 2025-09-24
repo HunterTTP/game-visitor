@@ -4,52 +4,31 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Game Visitor</title>
-
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css"
-    />
-    <script
-      defer
-      src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"
-    ></script>
-
-    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
-
     <style>
       html,
       body {
         height: 100%;
         margin: 0;
-        background: #0b0c0f;
       }
-      body {
-        display: flex;
-        flex-direction: column;
+      .grid {
+        height: 100vh;
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding: 0.5rem;
       }
-      main {
-        flex: 1;
+      .tile {
+        aspect-ratio: 1 / 1;
       }
-      #pano {
+      .tile img {
         width: 100%;
         height: 100%;
-        background: #000;
-      }
-
-      #vrOverlay {
-        position: fixed;
-        inset: 0;
-        background: #000;
-        z-index: 1080;
-        display: none;
-      }
-      #vrOverlay a-scene {
-        width: 100%;
-        height: 100%;
+        border-radius: 0.7rem;
+        object-fit: cover;
+        display: block;
       }
     </style>
   </head>
@@ -72,35 +51,7 @@
         <div
           class="position-absolute top-50 start-50 translate-middle pe-none z-3"
         >
-          <div class="dropdown pe-auto">
-            <button
-              class="btn btn-outline-light btn-sm dropdown-toggle"
-              type="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >
-              Select Location
-            </button>
-            <ul class="dropdown-menu dropdown-menu-dark">
-              <li>
-                <a class="dropdown-item pano-option" data-scene="wow1" href="#"
-                  >Goldshire - Inside</a
-                >
-              </li>
-              <li>
-                <a class="dropdown-item pano-option" data-scene="wow2" href="#"
-                  >Goldshire - Woods</a
-                >
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="ms-auto d-flex gap-2">
-          <button id="btnReset" class="btn btn-outline-light btn-sm">
-            Reset
-          </button>
-          <button id="btnVR" class="btn btn-primary btn-sm">VR</button>
+          <a class="navbar-brand" href="#">Game Visitor</a>
         </div>
       </div>
     </nav>
@@ -128,143 +79,133 @@
             href="https://github.com/HunterTTP/game-visitor"
             >GitHub</a
           >
-          <a
-            class="nav-link text-primary"
-            href="/level-selector.html"
-            >Level Selector</a
-          >
         </nav>
       </div>
     </div>
-
-    <main class="container-fluid p-0">
-      <div id="pano"></div>
-    </main>
-
-    <div id="vrOverlay">
-      <a-scene
-        id="vrScene"
-        renderer="antialias: true"
-        background="color: #000"
-        vr-mode-ui="enabled: true"
-      >
-        <a-assets>
-          <img id="vr-wow1" src="panos/wow-pano.jpg" crossorigin="anonymous" />
-          <img
-            id="vr-wow2"
-            src="panos/wow-pano-2.jpg"
-            crossorigin="anonymous"
-          />
-        </a-assets>
-        <a-entity
-          camera
-          look-controls
-          wasd-controls="enabled:false"
-          position="0 1.6 0"
-        ></a-entity>
-        <a-sky id="vrSky" src="#vr-wow1" rotation="0 -90 0"></a-sky>
-      </a-scene>
+    <div class="grid">
+      <div class="row row-cols-3 g-2">
+        <div class="col tile">
+          <a href="/level-viewer.html?id=wow-pano">
+            <img src="/panos/wow-pano-thumb.webp" alt="Wow Pano" />
+          </a>
+        </div>
+        <div class="col tile">
+          <a href="/level-viewer.html?id=wow-pano-2">
+            <img src="/panos/wow-pano-2-thumb.webp" alt="Wow Pano 2" />
+          </a>
+        </div>
+        <div class="col tile">
+          <a href="/level-viewer.html?id=level-3">
+            <img src="https://picsum.photos/seed/3/600/600" alt="Level 3" />
+          </a>
+        </div>
+        <div class="col tile">
+          <a href="/level-viewer.html?id=level-4">
+            <img src="https://picsum.photos/seed/4/600/600" alt="Level 4" />
+          </a>
+        </div>
+        <div class="col tile">
+          <a href="/level-viewer.html?id=level-5">
+            <img src="https://picsum.photos/seed/5/600/600" alt="Level 5" />
+          </a>
+        </div>
+        <div class="col tile">
+          <a href="/level-viewer.html?id=level-6">
+            <img src="https://picsum.photos/seed/6/600/600" alt="Level 6" />
+          </a>
+        </div>
+        <div class="col tile">
+          <a href="/level-viewer.html?id=level-7">
+            <img src="https://picsum.photos/seed/7/600/600" alt="Level 7" />
+          </a>
+        </div>
+        <div class="col tile">
+          <a href="/level-viewer.html?id=level-8">
+            <img src="https://picsum.photos/seed/8/600/600" alt="Level 8" />
+          </a>
+        </div>
+        <div class="col tile">
+          <a href="/level-viewer.html?id=level-9">
+            <img src="https://picsum.photos/seed/9/600/600" alt="Level 9" />
+          </a>
+        </div>
+        <div class="col tile">
+          <a href="/level-viewer.html?id=level-10">
+            <img src="https://picsum.photos/seed/10/600/600" alt="Level 10" />
+          </a>
+        </div>
+        <div class="col tile">
+          <a href="/level-viewer.html?id=level-11">
+            <img src="https://picsum.photos/seed/11/600/600" alt="Level 11" />
+          </a>
+        </div>
+        <div class="col tile">
+          <a href="/level-viewer.html?id=level-12">
+            <img src="https://picsum.photos/seed/12/600/600" alt="Level 12" />
+          </a>
+        </div>
+        <div class="col tile">
+          <a href="/level-viewer.html?id=level-13">
+            <img src="https://picsum.photos/seed/13/600/600" alt="Level 13" />
+          </a>
+        </div>
+        <div class="col tile">
+          <a href="/level-viewer.html?id=level-14">
+            <img src="https://picsum.photos/seed/14/600/600" alt="Level 14" />
+          </a>
+        </div>
+        <div class="col tile">
+          <a href="/level-viewer.html?id=level-15">
+            <img src="https://picsum.photos/seed/15/600/600" alt="Level 15" />
+          </a>
+        </div>
+        <div class="col tile">
+          <a href="/level-viewer.html?id=level-16">
+            <img src="https://picsum.photos/seed/16/600/600" alt="Level 16" />
+          </a>
+        </div>
+        <div class="col tile">
+          <a href="/level-viewer.html?id=level-17">
+            <img src="https://picsum.photos/seed/17/600/600" alt="Level 17" />
+          </a>
+        </div>
+        <div class="col tile">
+          <a href="/level-viewer.html?id=level-18">
+            <img src="https://picsum.photos/seed/18/600/600" alt="Level 18" />
+          </a>
+        </div>
+        <div class="col tile">
+          <a href="/level-viewer.html?id=level-19">
+            <img src="https://picsum.photos/seed/19/600/600" alt="Level 19" />
+          </a>
+        </div>
+        <div class="col tile">
+          <a href="/level-viewer.html?id=level-20">
+            <img src="https://picsum.photos/seed/20/600/600" alt="Level 20" />
+          </a>
+        </div>
+        <div class="col tile">
+          <a href="/level-viewer.html?id=level-21">
+            <img src="https://picsum.photos/seed/21/600/600" alt="Level 21" />
+          </a>
+        </div>
+        <div class="col tile">
+          <a href="/level-viewer.html?id=level-22">
+            <img src="https://picsum.photos/seed/22/600/600" alt="Level 22" />
+          </a>
+        </div>
+        <div class="col tile">
+          <a href="/level-viewer.html?id=level-23">
+            <img src="https://picsum.photos/seed/23/600/600" alt="Level 23" />
+          </a>
+        </div>
+        <div class="col tile">
+          <a href="/level-viewer.html?id=level-24">
+            <img src="https://picsum.photos/seed/24/600/600" alt="Level 24" />
+          </a>
+        </div>
+      </div>
     </div>
-
-    <script>
-      window.addEventListener("DOMContentLoaded", () => {
-        const breakpoints = {
-          phone: window.matchMedia("(max-width: 576px)"),
-          tablet: window.matchMedia(
-            "(min-width: 577px) and (max-width: 992px)"
-          ),
-          desktop: window.matchMedia(
-            "(min-width: 993px) and (max-width: 1200px)"
-          ),
-          largeDesktop: window.matchMedia("(min-width: 1201px)"),
-        };
-
-        const hfovFor = () => {
-          if (breakpoints.phone.matches) return 55;
-          if (breakpoints.tablet.matches) return 70;
-          return 85;
-        };
-
-        const minH = 20,
-          maxH = 95;
-
-        const viewer = pannellum.viewer("pano", {
-          default: {
-            firstScene: "wow1",
-            autoLoad: true,
-            autoRotate: -2,
-            hfov: hfovFor(),
-            minHfov: minH,
-            maxHfov: maxH,
-          },
-          scenes: {
-            wow1: { type: "equirectangular", panorama: "panos/wow-pano.jpg" },
-            wow2: { type: "equirectangular", panorama: "panos/wow-pano-2.jpg" },
-          },
-        });
-
-        const applyResponsiveHfov = () => viewer.setHfov(hfovFor(), false);
-        Object.values(breakpoints).forEach((mq) =>
-          mq.addEventListener("change", applyResponsiveHfov)
-        );
-        window.addEventListener("orientationchange", applyResponsiveHfov);
-        window.addEventListener("resize", applyResponsiveHfov);
-
-        const dropdownBtn = document.querySelector(
-          ".dropdown .dropdown-toggle"
-        );
-        const setDropdownLabel = (sceneId) => {
-          const item = document.querySelector(
-            `.dropdown-item[data-scene="${sceneId}"]`
-          );
-          dropdownBtn.textContent = item
-            ? item.textContent.trim()
-            : "Select Location";
-        };
-        setDropdownLabel(viewer.getScene());
-
-        document.getElementById("btnReset").onclick = () => {
-          viewer.lookAt(0, 0, hfovFor(), false);
-          viewer.startAutoRotate(-2);
-          setDropdownLabel(viewer.getScene());
-        };
-
-        let autoRotating = true;
-        document.querySelectorAll(".pano-option").forEach((el) => {
-          el.addEventListener("click", (e) => {
-            e.preventDefault();
-            const scene = el.getAttribute("data-scene");
-            viewer.loadScene(scene, null, null, hfovFor(), 0);
-            if (autoRotating) viewer.startAutoRotate(-2);
-            else viewer.stopAutoRotate();
-            setDropdownLabel(scene);
-          });
-        });
-
-        const btnVR = document.getElementById("btnVR");
-        const vrOverlay = document.getElementById("vrOverlay");
-        const vrScene = document.getElementById("vrScene");
-        const vrSky = document.getElementById("vrSky");
-
-        const syncSceneToVR = () => {
-          const sceneId = viewer.getScene();
-          vrSky.setAttribute("src", `#vr-${sceneId}`);
-        };
-
-        btnVR.addEventListener("click", () => {
-          syncSceneToVR();
-          vrOverlay.style.display = "block";
-          requestAnimationFrame(() => {
-            if (vrScene.enterVR) vrScene.enterVR();
-          });
-        });
-
-        vrScene.addEventListener("exit-vr", () => {
-          vrOverlay.style.display = "none";
-        });
-      });
-    </script>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>
