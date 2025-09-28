@@ -6,6 +6,7 @@ export const LEVELS = [
   { id: "wow-pano-5", title: "Northshire", pano: "panos/wow-pano-5.webp", thumb: "panos/wow-pano-5-thumb.webp" },
   { id: "wow-pano-6", title: "Teldrassil", pano: "panos/wow-pano-6.webp", thumb: "panos/wow-pano-6-thumb.webp" },
   { id: "halo-pano", title: "Guardian", pano: "panos/halo-pano.webp", thumb: "panos/halo-pano-thumb.webp" },
+  { id: "fo3-pano", title: "Megaton", pano: "panos/fo3-pano.webp", thumb: "panos/fo3-pano-thumb.webp" },
 ];
 
 export const getLevel = (id) => LEVELS.find((l) => l.id === id) || LEVELS[0];
