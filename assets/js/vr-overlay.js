@@ -19,10 +19,40 @@ function createVrScene(panoSrc) {
   sky.setAttribute("rotation", "0 -90 0");
   sky.setAttribute("src", panoSrc);
 
+  const left = document.createElement("a-entity");
+  left.setAttribute("laser-controls", "hand: left");
+  left.setAttribute("vr-nav-controls", "hand: left");
+
+  const right = document.createElement("a-entity");
+  right.setAttribute("laser-controls", "hand: right");
+  right.setAttribute("vr-nav-controls", "hand: right");
+
   scene.appendChild(cam);
   scene.appendChild(sky);
+  scene.appendChild(left);
+  scene.appendChild(right);
   return scene;
 }
+
+AFRAME.registerComponent("vr-nav-controls", {
+  schema: { hand: { type: "string", default: "right" } },
+  init() {
+    const btnPrev = document.getElementById("btnPrev");
+    const btnNext = document.getElementById("btnNext");
+    const btnReset = document.getElementById("btnReset");
+    const click = (el) => el && el.click();
+    this.el.addEventListener("triggerdown", () => {
+      if (this.data.hand === "left") click(btnPrev);
+      else click(btnNext);
+    });
+    this.el.addEventListener("thumbstickmoved", (e) => {
+      const x = e.detail.x || 0;
+      if (x <= -0.6) click(btnPrev);
+      if (x >= 0.6) click(btnNext);
+    });
+    this.el.addEventListener("gripdown", () => click(btnReset));
+  },
+});
 
 export function initVrOverlay() {
   const overlay = q("#vrOverlay");
