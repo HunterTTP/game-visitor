@@ -8,8 +8,6 @@ export function toggleMusic() {
   if (!bgm || !btn || !sel) return;
   bgm.muted = !bgm.muted;
   btn.innerHTML = bgm.muted ? '<i class="bi bi-play-fill"></i>' : '<i class="bi bi-stop-fill"></i>';
-  const navBtn = q("#btnPlayMusicNav");
-  if (navBtn) navBtn.innerHTML = btn.innerHTML;
   if (!bgm.muted) {
     if (!bgm.src) setTrack(sel.value || SONGS[0].id, false);
     bgm.play().catch(() => {});
@@ -43,9 +41,6 @@ export function initAudioControls() {
   sel.onchange = () => setTrack(sel.value, true);
 
   btn.onclick = toggleMusic;
-
-  const navBtn = q("#btnPlayMusicNav");
-  if (navBtn) navBtn.onclick = toggleMusic;
 
   setTrack(SONGS[0].id, false);
 }
