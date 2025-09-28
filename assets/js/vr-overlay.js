@@ -1,6 +1,16 @@
-import { getCurrentLevel } from "./viewer-pannellum.js";
+import { loadLevel, getCurrentLevel } from "./viewer-pannellum.js";
+import { getLevel, getLevelIndex } from "./data/data-levels.js";
 
 const q = (s, d = document) => d.querySelector(s);
+
+function getLevelAt(i) {
+  const len = (window.__LEVELS_LEN__ ?? 0) || 6;
+  const at = (i + len) % len;
+  const ids = window.__LEVEL_IDS__ || [];
+  if (ids.length === len) return getLevel(ids[at]);
+  const order = ["wow-pano", "wow-pano-2", "wow-pano-3", "wow-pano-4", "wow-pano-5", "wow-pano-6"];
+  return getLevel(order[at]);
+}
 
 function createVrScene(panoSrc) {
   const scene = document.createElement("a-scene");
@@ -34,43 +44,43 @@ function createVrScene(panoSrc) {
   return scene;
 }
 
+function advance(dir) {
+  const curr = getCurrentLevel();
+  if (!curr) return;
+  const idx = getLevelIndex(curr.id);
+  const target = getLevelAt(idx + dir);
+  const sky = document.getElementById("vrSky");
+  if (sky) sky.setAttribute("src", target.pano);
+  loadLevel(target);
+}
+
 AFRAME.registerComponent("vr-nav-controls", {
   schema: { hand: { type: "string", default: "right" } },
   init() {
-    const btnPrev = document.getElementById("btnPrev");
-    const btnNext = document.getElementById("btnNext");
-    const btnReset = document.getElementById("btnReset");
-    const click = (el) => el && el.click();
-    this.el.addEventListener("triggerdown", () => {
-      if (this.data.hand === "left") click(btnPrev);
-      else click(btnNext);
-    });
-    this.el.addEventListener("thumbstickmoved", (e) => {
-      const x = e.detail.x || 0;
-      if (x <= -0.6) click(btnPrev);
-      if (x >= 0.6) click(btnNext);
-    });
-    this.el.addEventListener("gripdown", () => click(btnReset));
+    this.onTrigger = () => {
+      if (this.data.hand === "left") advance(-1);
+      else advance(1);
+    };
+    this.el.addEventListener("triggerdown", this.onTrigger);
+  },
+  remove() {
+    this.el.removeEventListener("triggerdown", this.onTrigger);
   },
 });
 
 export function initVrOverlay() {
   const overlay = q("#vrOverlay");
   const btn = q("#btnVR");
-
   btn.addEventListener("click", () => {
     const level = getCurrentLevel();
     if (!level) return;
-
     overlay.style.display = "block";
     overlay.innerHTML = "";
     const scene = createVrScene(level.pano);
     overlay.appendChild(scene);
-
     requestAnimationFrame(() => {
       if (scene.enterVR) scene.enterVR();
     });
-
     scene.addEventListener("exit-vr", () => {
       overlay.style.display = "none";
       overlay.innerHTML = "";
