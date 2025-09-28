@@ -1,22 +1,18 @@
-import { loadLevel, getCurrentLevel } from "./viewer-pannellum.js";
-import { getLevel, getLevelIndex } from "./data/data-levels.js";
+import { getCurrentLevel, loadLevel } from "./viewer-pannellum.js";
+import { LEVELS, getLevelIndex } from "./data/data-levels.js";
 
 const q = (s, d = document) => d.querySelector(s);
 
-function getLevelAt(i) {
-  const len = (window.__LEVELS_LEN__ ?? 0) || 6;
-  const at = (i + len) % len;
-  const ids = window.__LEVEL_IDS__ || [];
-  if (ids.length === len) return getLevel(ids[at]);
-  const order = ["wow-pano", "wow-pano-2", "wow-pano-3", "wow-pano-4", "wow-pano-5", "wow-pano-6"];
-  return getLevel(order[at]);
+function at(i) {
+  const len = LEVELS.length;
+  return LEVELS[((i % len) + len) % len];
 }
 
-function createVrScene(panoSrc) {
+function createScene(panoSrc) {
   const scene = document.createElement("a-scene");
   scene.setAttribute("renderer", "antialias: true");
   scene.setAttribute("background", "color: #000");
-  scene.setAttribute("vr-mode-ui", "enabled: true");
+  scene.setAttribute("vr-mode-ui", "enabled: true; enterVRButton: #btnVR");
 
   const cam = document.createElement("a-entity");
   cam.setAttribute("camera", "");
@@ -48,10 +44,10 @@ function advance(dir) {
   const curr = getCurrentLevel();
   if (!curr) return;
   const idx = getLevelIndex(curr.id);
-  const target = getLevelAt(idx + dir);
+  const target = at(idx + dir);
   const sky = document.getElementById("vrSky");
   if (sky) sky.setAttribute("src", target.pano);
-  loadLevel(target);
+  loadLevel(target, true);
 }
 
 AFRAME.registerComponent("vr-nav-controls", {
@@ -71,19 +67,20 @@ AFRAME.registerComponent("vr-nav-controls", {
 export function initVrOverlay() {
   const overlay = q("#vrOverlay");
   const btn = q("#btnVR");
-  btn.addEventListener("click", () => {
-    const level = getCurrentLevel();
-    if (!level) return;
+
+  const level = getCurrentLevel();
+  if (!level) return;
+
+  overlay.style.display = "none";
+  overlay.innerHTML = "";
+  const scene = createScene(level.pano);
+  overlay.appendChild(scene);
+
+  scene.addEventListener("enter-vr", () => {
     overlay.style.display = "block";
-    overlay.innerHTML = "";
-    const scene = createVrScene(level.pano);
-    overlay.appendChild(scene);
-    requestAnimationFrame(() => {
-      if (scene.enterVR) scene.enterVR();
-    });
-    scene.addEventListener("exit-vr", () => {
-      overlay.style.display = "none";
-      overlay.innerHTML = "";
-    });
+  });
+
+  scene.addEventListener("exit-vr", () => {
+    overlay.style.display = "none";
   });
 }
